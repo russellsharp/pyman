@@ -52,7 +52,7 @@ class PythonManager:
             return
         # unique set of versions to display
         for v in set(versions):
-            typer.echo(str(v) + "*" if v == current_version else v)
+            typer.echo(str(v) + " *" if v == current_version else v)
         input("Press any key.")
 
     @staticmethod
