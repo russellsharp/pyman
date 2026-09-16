@@ -40,14 +40,20 @@ class PythonManager:
         directories = directories or []
         directories.extend(PythonManager.__read_python_directory_defaults())
         directories.extend(PythonManager.__read_python_where(file_pattern))
+
         versions: set[PythonVersion] = set(
             PythonManager.__find_versions(directories, file_pattern)
         )
         current_version = PythonManager.__get_current_version()
         versions.add(current_version)
-        for v in versions:
-            logger.info(str(v) + "*" if v == current_version else v)
-        typer.confirm("Press any key.", abort=True)
+
+        if len(versions) <= 0:
+            typer.echo("No python installation found.")
+            return
+        # unique set of versions to display
+        for v in set(versions):
+            typer.echo(str(v) + "*" if v == current_version else v)
+        input("Press any key.")
 
     @staticmethod
     def choose_version(
@@ -62,8 +68,15 @@ class PythonManager:
         directories = directories or []
         directories.extend(PythonManager.__read_python_directory_defaults())
         directories.extend(PythonManager.__read_python_where(file_pattern))
-        logger.info(PythonManager.__read_python_where(file_pattern))
+
         pythons = PythonManager.__find_versions(directories, file_pattern)
+
+        if len(pythons) <= 0:
+            typer.echo(
+                "python versions not found in given directories, default directories, or where.exe call."
+            )
+            return
+
         version_choice: PythonVersion | None = PythonManager.__prompt_versions(pythons)
         if version_choice:
             env_manager.set_python_runtime(version_choice.Path)
@@ -78,7 +91,6 @@ class PythonManager:
     ) -> list[PythonVersion]:
 
         paths: list[Path] = [PythonManager.__resolve_directory(f) for f in directories]
-
         pythons: list[Path] = []
 
         for path in paths:
@@ -93,11 +105,11 @@ class PythonManager:
         current_version = PythonManager.__get_current_version()
         selected = None
         prompt = ""
-        for i, v in enumerate(versions):
-            prompt += f"\n {v.Path} - {v.Version} ({i})"
+        for i, v in enumerate(set(versions)):
+            prompt += f"\n({i}) {v.Path} - {v.Version}"
             if v == current_version:
                 selected = i
-                prompt += "*"
+                prompt += " *"
         prompt += "\nSelect Version. Default"
         choice: int = 0
         while True:
@@ -118,7 +130,6 @@ class PythonManager:
             expanded = expanded.expanduser()
         if "$" in str(expanded):
             expanded = Path(os.path.expandvars(expanded))
-
         return expanded.resolve()
 
     @staticmethod
@@ -126,9 +137,12 @@ class PythonManager:
         directory: Path, file_pattern: str = "python.exe", max_depth: int = 2
     ) -> list[Path]:
         paths: list[Path] = []
-
         if not directory.exists():
+            logger.error(f"DIRECTORY DOES NOT EXIST {directory}")
             raise DirectoryDoesNotExist(str(directory))
+
+        if directory.is_file() and directory.match(file_pattern):
+            paths.append(Path(directory))
 
         base_depth: int = len(directory.parts)
 
@@ -140,6 +154,7 @@ class PythonManager:
 
             # prepending root directory is necessary
             file_paths = [Path(root / f) for f in files]
+
             paths.extend(f for f in file_paths if f.is_file() and f.match(file_pattern))
         return paths
 
@@ -150,6 +165,7 @@ class PythonManager:
         python_path = (
             python_path / "python.exe" if python_path.is_dir() else python_path
         )
+
         result: subprocess.CompletedProcess[str] | None = (
             PythonManager.__execute_process([str(python_path), "--version"])
         )
@@ -176,9 +192,10 @@ class PythonManager:
     @staticmethod
     def __read_python_directory_defaults() -> list[str]:
         found_directories: list[str] = []
-        with open(DIRECTORY_DEFAULT_FILE) as file:
-            data = json.load(file)
-            found_directories = data["DirectoryDefaults"]
+        if Path(DIRECTORY_DEFAULT_FILE).resolve().exists():
+            with open(DIRECTORY_DEFAULT_FILE) as file:
+                data = json.load(file)
+                found_directories = data["DirectoryDefaults"]
 
         return found_directories
 
@@ -189,7 +206,7 @@ class PythonManager:
             PythonManager.__execute_process([WHERE_EXE, file_pattern])
         )
         if result:
-            return result.stdout.strip().splitlines()
+            return result.stdout.replace("\\\\", "\\").splitlines()
         else:
             return []
 
