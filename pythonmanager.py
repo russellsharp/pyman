@@ -41,9 +41,7 @@ class PythonManager:
         directories.extend(PythonManager.__read_python_directory_defaults())
         directories.extend(PythonManager.__read_python_where(file_pattern))
 
-        versions: set[PythonVersion] = set(
-            PythonManager.__find_versions(directories, file_pattern)
-        )
+        versions: set[PythonVersion] = set(PythonManager.__find_versions(directories, file_pattern))
         current_version = PythonManager.__get_current_version()
         versions.add(current_version)
 
@@ -51,7 +49,8 @@ class PythonManager:
             typer.echo("No python installation found.")
             return
         # unique set of versions to display
-        for v in set(versions):
+        unique_ordered_versions = list(dict.fromkeys(versions))
+        for v in unique_ordered_versions:
             typer.echo(str(v) + " *" if v == current_version else v)
         input("Press any key.")
 
@@ -77,10 +76,16 @@ class PythonManager:
             )
             return
 
-        version_choice: PythonVersion | None = PythonManager.__prompt_versions(pythons)
+        pythons_ordered_unique = list(dict.fromkeys(pythons))
+
+        version_choice: PythonVersion | None = PythonManager.__prompt_versions(
+            pythons_ordered_unique
+        )
+
         if version_choice:
             env_manager.set_python_runtime(version_choice.Path)
             typer.echo(f"Set active python runtime to {version_choice}")
+            typer.echo("Run 'refreshenv' to refresh the active python runtime for this terminal.")
         else:
             typer.echo("Python runtime version unchanged.")
         input(f"Active python runtime version is {env_manager.get_python_runtime()}")
@@ -95,9 +100,7 @@ class PythonManager:
 
         for path in paths:
             pythons.extend(PythonManager.__find_file_recurse(path, file_pattern, 2))
-        versions: list[PythonVersion] = [
-            PythonManager.__get_version(py) for py in pythons
-        ]
+        versions: list[PythonVersion] = [PythonManager.__get_version(py) for py in pythons]
         return versions
 
     @staticmethod
@@ -105,23 +108,31 @@ class PythonManager:
         current_version = PythonManager.__get_current_version()
         selected = None
         prompt = ""
-        for i, v in enumerate(set(versions)):
+
+        unique_ordered_versions = list(dict.fromkeys(versions))
+        for i, v in enumerate(unique_ordered_versions):
             prompt += f"\n({i}) {v.Path} - {v.Version}"
             if v == current_version:
                 selected = i
                 prompt += " *"
         prompt += "\nSelect Version. Default"
+
         choice: int = 0
         while True:
             choice = typer.prompt(prompt, type=int, default=selected)
-            if choice >= 0 and choice < len(versions):
+            if choice >= 0 and choice < len(unique_ordered_versions):
                 break
 
             typer.secho(
-                f"Error: Choice must be between 0 and {len(versions) - 1}.",
+                f"Error: Choice must be between 0 and {len(unique_ordered_versions) - 1}.",
                 fg=typer.colors.RED,
             )
-        return versions[choice] if versions[choice] != current_version else None
+
+        return (
+            unique_ordered_versions[choice]
+            if unique_ordered_versions[choice] != current_version
+            else None
+        )
 
     @staticmethod
     def __resolve_directory(directory: str) -> Path:
@@ -162,18 +173,14 @@ class PythonManager:
     def __get_version(python_path: Path | str) -> PythonVersion:
         env_manager.check_privilege()
         python_path = Path(python_path) if isinstance(python_path, str) else python_path
-        python_path = (
-            python_path / "python.exe" if python_path.is_dir() else python_path
-        )
+        python_path = python_path / "python.exe" if python_path.is_dir() else python_path
 
-        result: subprocess.CompletedProcess[str] | None = (
-            PythonManager.__execute_process([str(python_path), "--version"])
+        result: subprocess.CompletedProcess[str] | None = PythonManager.__execute_process(
+            [str(python_path), "--version"]
         )
 
         version = (
-            result.stdout.lower().replace("python ", "").strip()
-            if result is not None
-            else "0.0.0"
+            result.stdout.lower().replace("python ", "").strip() if result is not None else "0.0.0"
         )
         return PythonVersion(version, python_path)
 
@@ -192,8 +199,26 @@ class PythonManager:
     @staticmethod
     def __read_python_directory_defaults() -> list[str]:
         found_directories: list[str] = []
-        if Path(DIRECTORY_DEFAULT_FILE).resolve().exists():
-            with open(DIRECTORY_DEFAULT_FILE) as file:
+
+        import os
+        import sys
+
+        application_path: str = ""
+        if getattr(sys, "frozen", False):
+            # Running as a compiled PyInstaller executable
+            application_path = os.path.dirname(sys.executable)
+        else:
+            # Running as a normal Python script
+            application_path = os.path.dirname(os.path.abspath(__file__))
+
+        defaults_file: Path = (
+            Path(application_path) / DIRECTORY_DEFAULT_FILE
+            if application_path
+            else Path(DIRECTORY_DEFAULT_FILE)
+        )
+
+        if Path(defaults_file).resolve().exists():
+            with open(defaults_file) as file:
                 data = json.load(file)
                 found_directories = data["DirectoryDefaults"]
 
@@ -202,8 +227,8 @@ class PythonManager:
     @staticmethod
     def __read_python_where(file_pattern: str) -> list[str]:
         WHERE_EXE: str = "where.exe"
-        result: subprocess.CompletedProcess[str] | None = (
-            PythonManager.__execute_process([WHERE_EXE, file_pattern])
+        result: subprocess.CompletedProcess[str] | None = PythonManager.__execute_process(
+            [WHERE_EXE, file_pattern]
         )
         if result:
             return result.stdout.replace("\\\\", "\\").splitlines()
