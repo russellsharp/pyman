@@ -1,7 +1,6 @@
-import logging
-
 import typer
 
+from common import setup_logger
 from envvarmanager import IEnvManager, WindowsEnvManager
 from pythonmanager import PythonManager
 
@@ -11,11 +10,7 @@ app: typer.Typer = typer.Typer(
     pretty_exceptions_show_locals=False,
 )
 
-logger = logging.getLogger()
-stream_handler = logging.StreamHandler()
-logger.addHandler(stream_handler)
-logger.setLevel(logging.INFO)
-logger.propagate = False
+logger = setup_logger(__name__)
 
 app.command(name="pick")(PythonManager.choose_version)
 app.command(name="list")(PythonManager.list_versions)

@@ -1,5 +1,4 @@
 import ctypes
-import logging
 import os
 import winreg
 from abc import ABC, abstractmethod
@@ -9,13 +8,13 @@ from pathlib import Path
 
 from elevate import elevate  # type: ignore
 
+from common import setup_logger
+
 ENV_VAR_PYTHON_KEY = "PYTHON_ACTIVE_RUNTIME"
 ENV_VAR_PATH = "PATH"
 ENV_VAR_REG_KEY = r"SYSTEM\CurrentControlSet\Control\Session Manager\Environment"
 
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-logger.propagate = True
+logger = setup_logger(__name__)
 
 
 class IEnvManager(ABC):
@@ -72,9 +71,7 @@ class WindowsEnvManager(IEnvManager):
     def check_privilege(self) -> None:
         elevate()
 
-    def set_windows_env_var(
-        self, name: str, value: str, context: Context = Context.SYSTEM
-    ):
+    def set_windows_env_var(self, name: str, value: str, context: Context = Context.SYSTEM):
         self.check_privilege()
         # Path to the Windows System environment variables in the registry
         reg_path = ENV_VAR_REG_KEY

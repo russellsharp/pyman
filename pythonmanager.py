@@ -1,5 +1,4 @@
 import json
-import logging
 import os
 import subprocess
 from pathlib import Path
@@ -7,15 +6,13 @@ from typing import Annotated
 
 import typer
 
+from common import setup_logger
 from envvarmanager import IEnvManager, WindowsEnvManager
 from pythonversion import PythonVersion
 
 DIRECTORY_DEFAULT_FILE = "default_directories.json"
 
-logging.root.handlers = []
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-logger.propagate = True
+logger = setup_logger(__name__)
 
 
 class DirectoryDoesNotExist(BaseException):
