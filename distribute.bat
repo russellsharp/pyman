@@ -1,2 +1,2 @@
-poetry run pyinstaller --onefile pyman.py
+poetry run pyinstaller pyman.spec
 robocopy .\dist\ c:\bin /np
