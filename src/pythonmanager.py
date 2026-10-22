@@ -1,16 +1,17 @@
-import json
 import os
 import subprocess
 from pathlib import Path
 from typing import Annotated
 
+import click
 import typer
 
 from common import setup_logger
-from envvarmanager import IEnvManager, WindowsEnvManager
-from pythonversion import PythonVersion
-
-DIRECTORY_DEFAULT_FILE = "default_directories.json"
+from config import CONFIG_PATH
+from src.configuration import Configuration
+from src.envvarmanager import IEnvManager, WindowsEnvManager
+from src.pythonversion import PythonVersion
+from src.utilities.utilities import handle_collection
 
 logger = setup_logger(__name__)
 
@@ -22,6 +23,8 @@ class DirectoryDoesNotExist(BaseException):
 
 env_manager: IEnvManager = WindowsEnvManager()
 
+configuration = Configuration.load_json(CONFIG_PATH)
+
 
 class PythonManager:
     @staticmethod
@@ -32,13 +35,22 @@ class PythonManager:
         file_pattern: Annotated[
             str, typer.Option(help="File name of python executable")
         ] = "python.exe",
+        max_depth: Annotated[
+            int | None, typer.Option(help="Maximum depth to traverse from given directories.")
+        ] = None,
     ) -> None:
+        logger.info("Scanning for python executables.")
+        if max_depth is None:
+            max_depth = configuration.max_depth
 
+        handle_collection("Default directories", configuration.default_directories, logger.debug)
         directories = directories or []
-        directories.extend(PythonManager.__read_python_directory_defaults())
+        directories.extend([str(path) for path in configuration.default_directories])
         directories.extend(PythonManager.__read_python_where(file_pattern))
 
-        versions: set[PythonVersion] = set(PythonManager.__find_versions(directories, file_pattern))
+        versions: set[PythonVersion] = set(
+            PythonManager.__find_versions(directories, file_pattern, max_depth)
+        )
         current_version = PythonManager.__get_current_version()
         versions.add(current_version)
 
@@ -59,13 +71,18 @@ class PythonManager:
         file_pattern: Annotated[
             str, typer.Option(help="File name of python executable")
         ] = "python.exe",
+        max_depth: Annotated[
+            int | None, typer.Option(help="Maximum depth to traverse from given directories.")
+        ] = None,
     ) -> None:
+        if max_depth is None:
+            max_depth = configuration.max_depth
 
         directories = directories or []
-        directories.extend(PythonManager.__read_python_directory_defaults())
+        directories.extend([str(path) for path in configuration.default_directories])
         directories.extend(PythonManager.__read_python_where(file_pattern))
 
-        pythons = PythonManager.__find_versions(directories, file_pattern)
+        pythons = PythonManager.__find_versions(directories, file_pattern, max_depth=max_depth)
 
         if len(pythons) <= 0:
             typer.echo(
@@ -85,18 +102,20 @@ class PythonManager:
             typer.echo("Run 'refreshenv' to refresh the active python runtime for this terminal.")
         else:
             typer.echo("Python runtime version unchanged.")
-        input(f"Active python runtime version is {env_manager.get_python_runtime()}")
+        click.pause(info=f"Active python runtime version is {env_manager.get_python_runtime()}")
 
     @staticmethod
     def __find_versions(
-        directories: list[str], file_pattern: str = "python.exe"
+        directories: list[str], file_pattern: str = "python.exe", max_depth: int = 3
     ) -> list[PythonVersion]:
 
         paths: list[Path] = [PythonManager.__resolve_directory(f) for f in directories]
         pythons: list[Path] = []
 
         for path in paths:
-            pythons.extend(PythonManager.__find_file_recurse(path, file_pattern, 2))
+            pythons.extend(
+                PythonManager.__find_file_recurse(path, file_pattern, max_depth=max_depth)
+            )
         versions: list[PythonVersion] = [PythonManager.__get_version(py) for py in pythons]
         return versions
 
@@ -142,29 +161,41 @@ class PythonManager:
 
     @staticmethod
     def __find_file_recurse(
-        directory: Path, file_pattern: str = "python.exe", max_depth: int = 2
+        directory: Path, file_pattern: str = "python.exe", max_depth: int = 3
     ) -> list[Path]:
         paths: list[Path] = []
+
         if not directory.exists():
-            logger.error(f"DIRECTORY DOES NOT EXIST {directory}")
-            raise DirectoryDoesNotExist(str(directory))
+            logger.error(f"DIRECTORY DOES NOT EXIST: {directory}")
+            return []
 
         if directory.is_file() and directory.match(file_pattern):
             paths.append(Path(directory))
 
         base_depth: int = len(directory.parts)
 
-        for root, _, files in directory.walk(top_down=True):
+        for root, subdirs, files in directory.walk(top_down=True):
             current_depth = len(root.parts) - base_depth
 
             if current_depth >= max_depth:
-                return paths
-
+                subdirs.clear()
             # prepending root directory is necessary
             file_paths = [Path(root / f) for f in files]
 
             paths.extend(f for f in file_paths if f.is_file() and f.match(file_pattern))
         return paths
+
+    @staticmethod
+    def ___walk_with_max_depth(root_path: Path, max_depth: int = 3):
+        base_depth = len(root_path.parts)
+
+        for root, subdirs, files in root_path.walk():
+            yield root, subdirs, files
+
+            current_depth = len(root.parts) - base_depth
+
+            if current_depth >= max_depth:
+                subdirs.clear()
 
     @staticmethod
     def __get_version(python_path: Path | str) -> PythonVersion:
@@ -192,34 +223,6 @@ class PythonManager:
                 else current_runtime / "python.exe"
             ) or PythonVersion("0.0.0", Path(""))
         return current_version
-
-    @staticmethod
-    def __read_python_directory_defaults() -> list[str]:
-        found_directories: list[str] = []
-
-        import os
-        import sys
-
-        application_path: str = ""
-        if getattr(sys, "frozen", False):
-            # Running as a compiled PyInstaller executable
-            application_path = os.path.dirname(sys.executable)
-        else:
-            # Running as a normal Python script
-            application_path = os.path.dirname(os.path.abspath(__file__))
-
-        defaults_file: Path = (
-            Path(application_path) / DIRECTORY_DEFAULT_FILE
-            if application_path
-            else Path(DIRECTORY_DEFAULT_FILE)
-        )
-
-        if Path(defaults_file).resolve().exists():
-            with open(defaults_file) as file:
-                data = json.load(file)
-                found_directories = data["DirectoryDefaults"]
-
-        return found_directories
 
     @staticmethod
     def __read_python_where(file_pattern: str) -> list[str]:

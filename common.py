@@ -8,9 +8,9 @@ def patch_logger_with_trace():
 
     logging.addLevelName(TRACE_LEVEL_NUM, "TRACE")
 
-    def trace(self: logging.Logger, message: str, *args: Any, **kws: dict[str, Any]):
+    def trace(self: logging.Logger, message: str, *args: Any, **kwargs: dict[str, Any]):
         if self.isEnabledFor(TRACE_LEVEL_NUM):
-            self._log(TRACE_LEVEL_NUM, message, args, **kws)  # type: ignore
+            self._log(TRACE_LEVEL_NUM, message, *args, **kwargs)  # type: ignore
 
     logging.Logger.trace = trace  # type: ignore
 

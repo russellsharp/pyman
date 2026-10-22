@@ -1,10 +1,11 @@
 import typer
 
 from common import setup_logger
-from envvarmanager import IEnvManager, WindowsEnvManager
-from pythonmanager import PythonManager
+from src.envvarmanager import IEnvManager, WindowsEnvManager
+from src.pythonmanager import PythonManager
 
 app: typer.Typer = typer.Typer(
+    chain=True,
     no_args_is_help=True,
     pretty_exceptions_enable=False,
     pretty_exceptions_show_locals=False,
