@@ -12,6 +12,11 @@ files = [
     {file = "altgraph-0.17.5.tar.gz", hash = "sha256:c87b395dd12fabde9c99573a9749d67da8d29ef9de0125c7f536699b4a9bc9e7"},
 ]
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [[package]]
 name = "annotated-doc"
 version = "0.0.5"
@@ -23,6 +28,11 @@ files = [
     {file = "annotated_doc-0.0.5-py3-none-any.whl", hash = "sha256:117bac03a25ede5df5440e855b32d556049ca169ead221505badf432fed4b101"},
     {file = "annotated_doc-0.0.5.tar.gz", hash = "sha256:c7e58ce09192557605d8bbd92836d7e1d520ac9580096042c0bfd197efacf1bb"},
 ]
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "annotated-types"
@@ -36,6 +46,11 @@ files = [
     {file = "annotated_types-0.8.0.tar.gz", hash = "sha256:13b2beaad985e05e2d6407ee4c4f35590b11f8d693a258a561055cac8f64cab7"},
 ]
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [[package]]
 name = "blinker"
 version = "1.9.0"
@@ -48,6 +63,11 @@ files = [
     {file = "blinker-1.9.0.tar.gz", hash = "sha256:b4ce2265a7abece45e7cc896e98dbebe6cead56bcf805a3d23136d145f5445bf"},
 ]
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [[package]]
 name = "click"
 version = "8.5.0"
@@ -59,6 +79,11 @@ files = [
     {file = "click-8.5.0-py3-none-any.whl", hash = "sha256:255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360"},
     {file = "click-8.5.0.tar.gz", hash = "sha256:ba0d2089de75ea0310e2dde03160e6ca10009947fb95a182f9b54021bb272e34"},
 ]
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "colorama"
@@ -73,6 +98,11 @@ files = [
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
 ]
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [[package]]
 name = "elevate"
 version = "0.1.3"
@@ -83,6 +113,11 @@ groups = ["main"]
 files = [
     {file = "elevate-0.1.3.tar.gz", hash = "sha256:53ad19fa1de301fb1de3f8768fb3a5894215716fd96a475690c4d0ff3b1de209"},
 ]
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "flask"
@@ -108,6 +143,11 @@ werkzeug = ">=3.1.0"
 async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [[package]]
 name = "iniconfig"
 version = "2.3.1"
@@ -120,6 +160,11 @@ files = [
     {file = "iniconfig-2.3.1.tar.gz", hash = "sha256:67f4b9c50da0dedf52af349e7749a80a9057a5031199791b906c3bb3ae878960"},
 ]
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [[package]]
 name = "itsdangerous"
 version = "2.2.0"
@@ -131,6 +176,11 @@ files = [
     {file = "itsdangerous-2.2.0-py3-none-any.whl", hash = "sha256:c6242fc49e35958c8b15141343aa660db5fc54d4f13a1db01a3f5891b98700ef"},
     {file = "itsdangerous-2.2.0.tar.gz", hash = "sha256:e0050c0b7da1eea53ffaf149c0cfbb5c6e2e2b69c4bef22c81fa6eb73e5f6173"},
 ]
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "jinja2"
@@ -150,6 +200,11 @@ MarkupSafe = ">=2.0"
 [package.extras]
 i18n = ["Babel (>=2.7)"]
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [[package]]
 name = "macholib"
 version = "1.16.4"
@@ -165,6 +220,11 @@ files = [
 
 [package.dependencies]
 altgraph = ">=0.17"
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "markdown-it-py"
@@ -189,6 +249,11 @@ plugins = ["mdit-py-plugins (>=0.5.0)"]
 profiling = ["gprof2dot"]
 rtd = ["ipykernel", "jupyter_sphinx", "mdit-py-plugins (>=0.5.0)", "myst-parser", "pyyaml", "sphinx", "sphinx-book-theme (>=1.0,<2.0)", "sphinx-copybutton", "sphinx-design"]
 testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions", "pytest-timeout", "requests"]
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "markupsafe"
@@ -351,6 +416,11 @@ files = [
     {file = "markupsafe-3.0.4.tar.gz", hash = "sha256:2e9ad7dd851bf45fab9f75cbff4cb493fee9979e8d8c7c9c3ee119022518edd6"},
 ]
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [[package]]
 name = "mdurl"
 version = "0.1.2"
@@ -363,6 +433,11 @@ files = [
     {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
 ]
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [[package]]
 name = "packaging"
 version = "26.3"
@@ -374,6 +449,11 @@ files = [
     {file = "packaging-26.3-py3-none-any.whl", hash = "sha256:d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c"},
     {file = "packaging-26.3.tar.gz", hash = "sha256:94edc256424af38762eb31306eed28beb9f0efc50a8837492c9d6fd6004aed79"},
 ]
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "pefile"
@@ -388,6 +468,11 @@ files = [
     {file = "pefile-2024.8.26.tar.gz", hash = "sha256:3ff6c5d8b43e8c37bb6e6dd5085658d658a7a0bdcd20b6a07b1fcfc1c4e9d632"},
 ]
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [[package]]
 name = "pluggy"
 version = "1.7.0"
@@ -399,6 +484,11 @@ files = [
     {file = "pluggy-1.7.0-py3-none-any.whl", hash = "sha256:7dd7b0d8832ba3cb632c306926ded123429211b83641b35dc5c41ad2d34f9bec"},
     {file = "pluggy-1.7.0.tar.gz", hash = "sha256:d1eaa46ebb595891b860ab086b4d09c8588af65ebd4361b8e8f4bb8920b90ba8"},
 ]
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "pydantic"
@@ -421,6 +511,11 @@ typing-inspection = ">=0.4.4"
 [package.extras]
 email = ["email-validator (>=2.0.0)"]
 timezone = ["tzdata ; platform_system == \"Windows\""]
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "pydantic-core"
@@ -572,6 +667,11 @@ files = [
 [package.dependencies]
 typing-extensions = ">=4.16.0"
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [[package]]
 name = "pygments"
 version = "2.21.0"
@@ -586,6 +686,11 @@ files = [
 
 [package.extras]
 windows-terminal = ["colorama (>=0.4.6)"]
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "pyinstaller"
@@ -622,6 +727,11 @@ setuptools = ">=42.0.0"
 completion = ["argcomplete"]
 hook-testing = ["execnet (>=1.5.0)", "psutil", "pytest (>=2.7.3)"]
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [[package]]
 name = "pyinstaller-hooks-contrib"
 version = "2026.9"
@@ -636,6 +746,11 @@ files = [
 
 [package.dependencies]
 packaging = ">=22.0"
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "pytest"
@@ -659,6 +774,11 @@ pygments = ">=2.7.2"
 [package.extras]
 dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "requests", "setuptools", "xmlschema"]
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [[package]]
 name = "pywin32-ctypes"
 version = "0.2.3"
@@ -671,6 +791,11 @@ files = [
     {file = "pywin32-ctypes-0.2.3.tar.gz", hash = "sha256:d162dc04946d704503b2edc4d55f3dba5c1d539ead017afa00142c38b9885755"},
     {file = "pywin32_ctypes-0.2.3-py3-none-any.whl", hash = "sha256:8a1513379d709975552d202d942d9837758905c8d01eb82b8bcc30918929e7b8"},
 ]
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "rich"
@@ -690,6 +815,28 @@ pygments = ">=2.13.0,<3.0.0"
 
 [package.extras]
 jupyter = ["ipywidgets (>=7.5.1,<9)"]
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
+[[package]]
+name = "russell"
+version = "0.1.31"
+description = "A short, clear description of what the russell package does"
+optional = false
+python-versions = ">=3.12"
+groups = ["main"]
+files = [
+    {file = "russell-0.1.31-py3-none-any.whl", hash = "sha256:5bccf80040ca75866fe601c9da677c3b83c3f0d4417c741f6a66f7b36ea2b808"},
+    {file = "russell-0.1.31.tar.gz", hash = "sha256:dd995c82552a15b9d6cf0d657fe21cbee658a0c4375738d0eb5942ef150574fe"},
+]
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "setuptools"
@@ -712,6 +859,11 @@ enabler = ["pytest-enabler (>=3.4)"]
 test = ["build[virtualenv] (>=1.0.3)", "filelock (>=3.4.0)", "ini2toml[lite] (>=0.14)", "jaraco.develop (>=7.21) ; python_version >= \"3.9\" and sys_platform != \"cygwin\"", "jaraco.envs (>=2.2)", "jaraco.path (>=3.7.2)", "jaraco.test (>=5.5)", "packaging (>=26.3)", "pip (>=19.1)", "pyproject-hooks (!=1.1)", "pytest (>=6,!=8.1.*)", "pytest-home (>=0.5)", "pytest-perf ; sys_platform != \"cygwin\"", "pytest-subprocess", "pytest-timeout", "pytest-xdist (>=3)", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel (>=0.44.0)"]
 type = ["importlib_metadata (>=7.0.2) ; python_version < \"3.10\"", "jaraco.develop (>=7.21) ; sys_platform != \"cygwin\"", "mypy (==1.18.*)", "pytest-mypy (>=1.0.1) ; platform_python_implementation != \"PyPy\""]
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [[package]]
 name = "shellingham"
 version = "1.5.4"
@@ -723,6 +875,11 @@ files = [
     {file = "shellingham-1.5.4-py2.py3-none-any.whl", hash = "sha256:7ecfff8f2fd72616f7481040475a65b2bf8af90a56c89140852d1120324e8686"},
     {file = "shellingham-1.5.4.tar.gz", hash = "sha256:8dbca0739d487e5bd35ab3ca4b36e11c4078f3a234bfce294b0a0291363404de"},
 ]
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "typer"
@@ -742,6 +899,11 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 rich = ">=13.8.0"
 shellingham = ">=1.3.0"
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [[package]]
 name = "typing-extensions"
 version = "4.16.0"
@@ -753,6 +915,11 @@ files = [
     {file = "typing_extensions-4.16.0-py3-none-any.whl", hash = "sha256:481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"},
     {file = "typing_extensions-4.16.0.tar.gz", hash = "sha256:dc983d19a509c94dba722ee6abd33940f7c05a89e243c47e907eb4db6f1a43e5"},
 ]
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "typing-inspection"
@@ -768,6 +935,11 @@ files = [
 
 [package.dependencies]
 typing-extensions = ">=4.15.0"
+
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
 
 [[package]]
 name = "werkzeug"
@@ -787,7 +959,12 @@ markupsafe = ">=2.1.1"
 [package.extras]
 watchdog = ["watchdog (>=2.3)"]
 
+[package.source]
+type = "legacy"
+url = "http://192.168.50.11:8297/simple"
+reference = "russell-pypi"
+
 [metadata]
 lock-version = "2.1"
-python-versions = ">=3.14,<3.15"
-content-hash = "962935fc9dbe25e2e1155415611f9d680ef0e0df9db5f7f91e2f695eda4fed6f"
+python-versions = ">=3.12,<3.15"
+content-hash = "85c145ac6258cfac575069703433f8e8d7f80ee8252b260f27e2c2ea47ac7a5c"

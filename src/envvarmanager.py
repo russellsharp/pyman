@@ -7,8 +7,7 @@ from enum import Enum
 from pathlib import Path
 
 from elevate import elevate  # type: ignore
-
-from common import setup_logger
+from russell.common import setup_logger
 
 ENV_VAR_PYTHON_KEY = "PYTHON_ACTIVE_RUNTIME"
 ENV_VAR_PATH = "PATH"

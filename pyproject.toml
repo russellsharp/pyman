@@ -3,7 +3,7 @@ name = "pyman"
 version = "0.1.0"
 description = ""
 authors = [{ name = "russellicious", email = "russellsharp80@gmail.com" }]
-requires-python = ">=3.14,<3.15"
+requires-python = ">=3.12,<3.15"
 dependencies = [
     "pytest (>=9.1.1,<10.0.0)",
     "flask (>=3.1.3,<4.0.0)",
@@ -11,12 +11,19 @@ dependencies = [
     "elevate (>=0.1.3,<0.2.0)",
     "pyinstaller (>=6.22.3,<7.0.0)",
     "pydantic (>=2.14.1,<3.0.0)",
+    "russell (>=0.1.0,<0.2.0)",
 ]
 
 
 [tool.poetry]
-packages = [{include = "*", from = "src"}, {include = "*", from = "src/utilities"}, {include = "*", from = "test"}]
+packages = [{include = "*", from = "src"}, {include = "*", from = "test"}]
 
+[[tool.poetry.source]]
+name = "russell-pypi"
+url = "http://192.168.50.11:8297/simple/"
+priority = "primary"
+
+[tool.poetry.dependencies]
 [top]
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

@@ -1,6 +1,6 @@
 import typer
 
-from common import setup_logger
+from russell.common import setup_logger
 from src.envvarmanager import IEnvManager, WindowsEnvManager
 from src.pythonmanager import PythonManager
 

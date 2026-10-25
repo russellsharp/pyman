@@ -2,11 +2,11 @@ from collections.abc import Generator
 from pathlib import Path
 
 import pytest
+from russell.common import setup_logger
+from russell.utilities.utilities import safe_file
 
-from common import setup_logger
 from config import TEST_SCRAP_PATH
 from src.configuration import Configuration
-from src.utilities.utilities import safe_file
 
 logger = setup_logger(__name__)
 
